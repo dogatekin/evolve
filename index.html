@@ -11,8 +11,15 @@
 <body>
   <div style="display: flex; justify-content: space-around; align-items: center; height: 100%;">
     <div style="width: 800px; height: 800px;" id="canvas"></div>
-    <div style="width: 400px; height: 400px;">
-      <canvas id="myChart"></canvas>
+    <div style="display: flex; flex-direction: column;">
+      <div style="width: 400px; height: 400px;">
+        <canvas id="myChart"></canvas>
+      </div>
+      <div style="width: 400px; height: 400px; font-family: sans-serif">
+        <h1 style="text-align: center;">Evolving Dots</h1>
+        <p>The little dots are using an evolutionary algorithm to learn how to reach the goal with the least number of steps. They start off moving in completely random directions, but get better over generations as the evolutionary algorithm favors the ones that manage to get closer to the goal. These "fitter" dots reproduce by generating new dots that move like their parents with slight random alterations, hopefully getting even closer to the goal.</p>
+        <p>Once a dot manages to reach the goal, their fitness is determined by the number of steps they took to get there. This way, evolution can help the population of dots find a more efficient way to reach the goal.</p>
+      </div>
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.js"></script>

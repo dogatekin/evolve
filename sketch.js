@@ -9,7 +9,7 @@ var chart = new Chart(ctx, {
     data: {
         labels: [],
         datasets: [{
-            label: 'Best Fitness',
+            label: 'Distance to Goal',
             fill: false,
             borderColor: 'green',
             backgroundColor: 'green',
@@ -22,12 +22,6 @@ var chart = new Chart(ctx, {
     options: {
       aspectRatio: 1,
       scales: {
-        yAxes: [{
-          scaleLabel: {
-            display: true,
-            labelString: 'Fitness'
-          }
-        }],
         xAxes: [{
           scaleLabel: {
             display: true,
@@ -143,10 +137,31 @@ class Population {
     }
 
     chart.data.labels.push(this.gen)
-    chart.data.datasets.forEach((dataset) => {
-      dataset.data.push(this.dots[this.bestDot].fitness);
-    });
-    chart.update();
+    chart.data.datasets[0].data.push(this.dots[this.bestDot].distToGoal)
+    
+    if (this.dots[this.bestDot].reached) {
+      if (chart.data.datasets.length == 1) {
+        let nullData = []
+        for (let i = 0; i < this.gen-1; i++) {
+          nullData.push(null)
+        }
+
+        chart.data.datasets.push({
+          label: 'Steps to Goal',
+          fill: false,
+          borderColor: 'blue',
+          backgroundColor: 'blue',
+          lineTension: 0,
+          data: nullData,
+        })
+      }
+
+      chart.data.datasets[1].data.push(this.dots[this.bestDot].brain.step)
+    }
+    
+    chart.update()
+
+
 
     newGeneration.push(this.dots[this.bestDot].giveBirth())
     newGeneration[0].isBest = true
@@ -208,6 +223,7 @@ class Dot {
     this.reached = false
     this.isBest = false
 
+    this.distToGoal = Infinity
     this.fitness = 0
   }
 
@@ -266,11 +282,12 @@ class Dot {
 
   calculateFitness(goal) { 
     if (this.reached) {
-      this.fitness = 1/16 + 1000/pow(this.brain.step, 2);
+      this.distToGoal = 0
+      this.fitness = 1/16 + 1/pow(this.brain.step, 2);
     }
     else {
-      let distToGoal = this.pos.dist(goal.pos); 
-      this.fitness = 1 / pow(distToGoal, 3);
+      this.distToGoal = this.pos.dist(goal.pos); 
+      this.fitness = 1 / pow(this.distToGoal, 3);
     }
   }
 
