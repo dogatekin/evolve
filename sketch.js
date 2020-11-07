@@ -1,7 +1,7 @@
 VEL_LIMIT = 6;
 
 function setup() {
-  myCanvas = createCanvas(800, 600);
+  myCanvas = createCanvas(800, 800);
   myCanvas.parent('canvas');
 
   population = new Population(500, 4, 400)
@@ -9,10 +9,15 @@ function setup() {
   goal = new Goal(createVector(width/2, 50), 10)
   
   obstacles = [
-    new Obstacle(150, 350, 500, 25),
-    new Obstacle(100, 100, 50, 100),
-    new Obstacle(650, 100, 50, 100),
-    new Obstacle(375, 225, 50, 50)
+    new Obstacle(150, 450, 500, 25),
+    new Obstacle(100, 200, 50, 100),
+    new Obstacle(650, 200, 50, 100),
+    new Obstacle(375, 325, 50, 50)
+  ]
+
+  obstacles = [
+    new Obstacle(0, 200, 500, 50),
+    new Obstacle(300, 500, 500, 50)
   ]
 
   goal.draw()
@@ -148,7 +153,7 @@ class Dot {
   constructor(d, brainSize) {
     this.brain = new Brain(brainSize)
     
-    this.pos = createVector(width/2, height-50)
+    this.pos = createVector(width/2, height-100)
     this.vel = createVector(0, 0)
     this.acc = createVector(0, 0)
 
@@ -190,11 +195,12 @@ class Dot {
   draw() {
     if (this.isBest) {
       fill(0, 255, 0)
+      ellipse(this.pos.x, this.pos.y, 3*this.d, 3*this.d)
     }
     else {
       fill(0)
+      ellipse(this.pos.x, this.pos.y, this.d, this.d)
     }
-    ellipse(this.pos.x, this.pos.y, this.d, this.d)
   }
 
   hitWall() {
@@ -216,7 +222,7 @@ class Dot {
 
   calculateFitness(goal) { 
     if (this.reached) {
-      this.fitness = 1/16 + 1000/pow(this.brain.step, 3);
+      this.fitness = 1/16 + 1000/pow(this.brain.step, 2);
     }
     else {
       let distToGoal = this.pos.dist(goal.pos); 
