@@ -1,5 +1,43 @@
 VEL_LIMIT = 6;
 
+var ctx = document.getElementById('myChart').getContext('2d');
+var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'line',
+
+    // The data for our dataset
+    data: {
+        labels: [],
+        datasets: [{
+            label: 'Best Fitness',
+            fill: false,
+            borderColor: 'green',
+            backgroundColor: 'green',
+            lineTension: 0,
+            data: [],
+        }]
+    },
+
+    // Configuration options go here
+    options: {
+      aspectRatio: 1,
+      scales: {
+        yAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: 'Fitness'
+          }
+        }],
+        xAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: 'Generation'
+          }
+        }]
+      }  
+    }
+});
+
 function setup() {
   myCanvas = createCanvas(800, 800);
   myCanvas.parent('canvas');
@@ -103,6 +141,12 @@ class Population {
     for (const dot of this.dots) {
       this.fitnessSum += dot.fitness
     }
+
+    chart.data.labels.push(this.gen)
+    chart.data.datasets.forEach((dataset) => {
+      dataset.data.push(this.dots[this.bestDot].fitness);
+    });
+    chart.update();
 
     newGeneration.push(this.dots[this.bestDot].giveBirth())
     newGeneration[0].isBest = true
