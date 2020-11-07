@@ -15,10 +15,10 @@ function setup() {
     new Obstacle(375, 325, 50, 50)
   ]
 
-  obstacles = [
-    new Obstacle(0, 200, 500, 50),
-    new Obstacle(300, 500, 500, 50)
-  ]
+  // obstacles = [
+  //   new Obstacle(0, 200, 500, 50),
+  //   new Obstacle(300, 500, 500, 50)
+  // ]
 
   goal.draw()
   for (obs of obstacles) {
